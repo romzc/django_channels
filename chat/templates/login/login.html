@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Chat App</title>
+</head>
+<body>
+    <div class="center">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <h2>Login in to your account</h2>
+            {% for field in form %}
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}   
+                    <small>{{ field.errors|striptags}}</small>
+                {% endif %}
+            {% endfor %}
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,14 +1,27 @@
 <!-- chat/templates/chat/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8"/>
         <title>Chat Rooms</title>
     </head>
     <body>
-        What chat room would you like to enter?<br>
-        <input id="room-name-input" type="text" size="100"><br>
-        <input id="room-name-submit" type="button" value="Enter">
+        <nav>
+            {% if user.is_authenticated %}
+                <p>Welcome, {{ user.username }}</p>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <p>You are not logged in.</p>
+            {% endif %}
+        </nav>
+        <article>
+            What chat room would you like to enter?<br>
+            <input id="room-name-input" type="text" size="100"><br>
+            <input id="room-name-submit" type="button" value="Enter">
+        </article>
 
         <script>
             document.querySelector('#room-name-input').focus();
