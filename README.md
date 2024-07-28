@@ -1,0 +1,3 @@
+# DJANGO CHANNELS
+## REQUIREMENTS
+Some notes
