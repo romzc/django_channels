@@ -1,31 +1,45 @@
 <!-- chat/templates/chat/room.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Room</title>
-</head>
-<body>
-    <nav>
+{% extends 'base.html' %}
+{% block content %}
+    <nav class="flex p-3 gap-5">
         {% if user.is_authenticated %}
             <p>Welcome, {{ user.username }}</p>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
-                <button type="submit">Logout</button>
+                <button 
+                    type="submit"
+                    class="bg-red-500 hover:bg-red-200 rounded-md border-red-500 border text-white px-2 py-1 hover:text-red-500"
+                >
+                    Logout
+                </button>
             </form>
         {% else %}
             <p>You are not logged in.</p>
         {% endif %}
     </nav>
-    <article>
-        <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-        <input id="chat-message-input" type="text" size="100"><br>
-        <input id="chat-message-submit" type="button" value="Send">
+    <article class="py-1 px-6">
+        <textarea id="chat-log" cols="100" rows="17"></textarea><br>
+        <input 
+            id="chat-message-input" 
+            type="text" 
+            size="96"
+            class="mb-2"
+        >
+        <br>
+        <button 
+            id="chat-message-submit" 
+            type="submit"
+            class="bg-green-700 rounded-md hover:bg-green-100 border-green-700 border text-blue-50 hover:text-green-700 h-8 px-3 py-1"
+        >
+            Send
+        </button>
         {{ room_name|json_script:"room-name" }}
     </article>
 
 
     <script>
+        const username = "{{ user.username }}"
+
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         const chatSocket = new WebSocket(
@@ -54,12 +68,11 @@
 
         document.querySelector('#chat-message-submit').onclick = function(e) {
             const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
+            const message = `${username}: ${messageInputDom.value}`;
             chatSocket.send(JSON.stringify({
                 'message': message
             }));
             messageInputDom.value = '';
         };
     </script>
-</body>
-</html>
+{% endblock %}
