@@ -18,9 +18,16 @@ class Room(AbstractBaseModel):
 
     def get_absolute_url(self):
         return f"/{self.name}/"
+    
+    def __str__(self) -> str:
+        return self.name
 
 
 class Message(AbstractBaseModel):
     message = models.TextField(blank=False, max_length=400)
     room = models.ForeignKey(Room, related_name='message', null=False, blank=False, on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='message', null=False, blank=False, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.message
+    

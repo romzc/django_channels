@@ -18,6 +18,7 @@
         {% endif %}
     </nav>
     <article class="py-1 px-6">
+        
         <textarea id="chat-log" cols="100" rows="17"></textarea><br>
         <input 
             id="chat-message-input" 
@@ -68,7 +69,7 @@
 
         document.querySelector('#chat-message-submit').onclick = function(e) {
             const messageInputDom = document.querySelector('#chat-message-input');
-            const message = `${username}: ${messageInputDom.value}`;
+            const message = `${messageInputDom.value}`;
             chatSocket.send(JSON.stringify({
                 'message': message
             }));
