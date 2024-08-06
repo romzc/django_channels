@@ -1,10 +1,12 @@
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models.query import QuerySet
 from django.http.response import HttpResponse as HttpResponse
 from django.contrib import messages
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
+from .models import Room
 
 # Create your views here.
 class LoginView(LoginView):
@@ -19,16 +21,15 @@ class LoginView(LoginView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-class SearchRoomView(LoginRequiredMixin, TemplateView):
+class RoomListView(LoginRequiredMixin, ListView):
+    model = Room
     template_name = 'chat/index.html'
 
 
 class RoomView(LoginRequiredMixin, TemplateView):
-
     template_name = "chat/room.html"
 
     def get_context_data(self, **kwargs) -> dict[str, any]:
         context = super().get_context_data(**kwargs)
         context['room_name'] = self.kwargs['room_name']
         return context
-

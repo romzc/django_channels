@@ -1,6 +1,6 @@
 import json
 
-from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -30,3 +30,4 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"message": message}))
+    

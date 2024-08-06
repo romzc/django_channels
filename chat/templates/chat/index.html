@@ -29,6 +29,15 @@
     </button>
 </article>
 
+<section>
+    <ul class="mx-2">
+        {% for room in object_list %}
+        <li class="font-bold bg-slate-400 ml-6 w-fit">
+            <a href="{{ room.get_absolute_url }}">{{  room.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
 
 <script>
     document.querySelector('#room-name-input').focus();
