@@ -1,10 +1,10 @@
 import json
 
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import Message, Room
 
-class ChatConsumer(AsyncWebsocketConsumer):
+class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         self.user = self.scope["user"]
@@ -25,6 +25,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def receive(self, text_data=None, bytes_data=None):
+        
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
 
@@ -40,10 +41,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
     
     async def chat_message(self, event):
-        print(event)
-        message = event["message"]
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({"message": message}))
+        await self.send_json(
+            {
+                'username': event['message'],
+                'message': event['message']
+            },
+        )
     
     
     # method to create a message register.
