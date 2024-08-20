@@ -1,15 +1,33 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-    	<title>Chat App</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		{% tailwind_css %}
-	</head>
+  <head>
+    <title>Chat App</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    {% tailwind_css %}
+  </head>
 
-	<body class="bg-slate-200 h-screen">
-		{% block content %}{% endblock %}
-	</body>
+  <body class="h-screen">
+    {% if user.is_authenticated %}
+    <nav class="px-2 py-1 bg-slate-500">
+      <ol class="flex justify-between items-center">
+        <li>Chat App</li>
+        <li class="flex gap-5 items-center">
+          <p>{{ user.username }}</p>
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="bg-red-500 hover:bg-red-200 rounded-md border-red-500 border text-white px-2 py-1 hover:text-red-500"
+            >
+              Logout
+            </button>
+          </form>
+        </li>
+      </ol>
+    </nav>
+    {% endif %} {% block content %}{% endblock %}
+  </body>
 </html>
